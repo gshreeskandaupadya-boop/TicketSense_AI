@@ -1,0 +1,27 @@
+{
+  "name": "ticketsense",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TicketSense — Confidence-Gated AI Decision Engine for Business Data (PS-04, BFWAI/HACK 26)",
+  "type": "module",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:backend": "npm run dev -w backend",
+    "dev:frontend": "npm run dev -w frontend",
+    "build": "npm run data:build && npm run build:frontend",
+    "build:frontend": "npm run build -w frontend",
+    "start": "npm run start -w backend",
+    "data:build": "npm run data:build -w backend",
+    "data:sanity": "npm run data:sanity -w backend",
+    "data:generate": "npm run data:generate -w backend",
+    "db:seed": "npm run db:seed -w backend",
+    "eval": "npm run eval -w backend"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

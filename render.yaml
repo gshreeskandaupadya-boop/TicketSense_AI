@@ -1,0 +1,35 @@
+# Render.com deploy config for TicketSense.
+# One web service hosts BOTH the REST API and the built React SPA.
+#
+# Build  : npm install && npm run build   (= data index build + frontend build)
+# Start  : npm start                      (Express serves API + frontend/dist)
+# Health : /api/health                    (used by Render to detect a live deploy)
+#
+# Deployment checklist (the usual reasons a deploy "gets stuck"):
+#   1. Do NOT set OPENAI_API_KEY as a BUILD-time env var on hosts without
+#      outbound network access — leave it as a runtime env var (sync: false).
+#   2. Set MONGODB_URI for persistence (the JSON store is ephemeral on Render).
+#   3. If you host the frontend separately (Vercel), set VITE_API_URL there to
+#      this service's URL and REBUILD — it is baked in at build time.
+
+services:
+  - type: web
+    name: ticketsense
+    runtime: node
+    plan: free
+    rootDir: .
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Set at runtime only — never required at build time.
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: AUTO_ROUTE_THRESHOLD
+        value: 0.75
+      - key: EMBED_DIM
+        value: 1024

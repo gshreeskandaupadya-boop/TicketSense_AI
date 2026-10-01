@@ -1,0 +1,17 @@
+node_modules/
+.env
+.env.local
+*.log
+
+# Generated artifacts (reproducible via `npm run data:build`)
+backend/data/store.json
+backend/data/index_meta.json
+backend/data/tickets.generated.csv
+
+# Build outputs
+frontend/dist/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

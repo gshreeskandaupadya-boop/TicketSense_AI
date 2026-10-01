@@ -87,7 +87,7 @@ export default function App() {
       {/* ── Footer ── */}
       <footer>
         <span>Hybrid retrieval · confidence gate · human-in-the-loop · evidence ledger</span>
-        <a href="/api/docs" target="_blank" rel="noreferrer">API docs ↗</a>
+        <a href={apiBase !== '(same origin)' ? `${apiBase}/api/docs` : '/api/docs'} target="_blank" rel="noreferrer">API docs ↗</a>
       </footer>
     </div>
   );

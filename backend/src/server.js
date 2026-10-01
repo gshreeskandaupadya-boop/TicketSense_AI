@@ -15,15 +15,31 @@ async function start() {
   store.load();
 
   const app = createApp();
-  app.listen(config.port, () => {
-    console.log(`TicketSense API listening on http://localhost:${config.port}`);
-    console.log(`  docs    : http://localhost:${config.port}/api/docs`);
-    console.log(`  embedder=${store.state.meta.embedder || '(not built yet)'} corpus=${store.getCorpus().length}`);
+
+  // Render provides the PORT environment variable.
+  // Fall back to config.port for local development.
+  const port = Number(process.env.PORT) || config.port || 3001;
+
+  // 0.0.0.0 is required so Render can access the server.
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`TicketSense API listening on port ${port}`);
+    console.log(`  docs    : http://localhost:${port}/api/docs`);
+    console.log(
+      `  embedder=${store.state.meta.embedder || '(not built yet)'} corpus=${store.getCorpus().length}`
+    );
+
     if (!store.state.meta.embedder) {
-      console.warn('  ⚠ No index found. Run `npm run data:build` (repo root) before using the API.');
+      console.warn(
+        '  ⚠ No index found. Run `npm run data:build` (repo root) before using the API.'
+      );
     }
   });
 }
+
+start().catch((e) => {
+  console.error('Failed to start server:', e);
+  process.exit(1);
+});
 
 start().catch((e) => {
   console.error('Failed to start server:', e);
